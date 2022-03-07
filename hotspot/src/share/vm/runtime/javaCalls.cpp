@@ -407,7 +407,7 @@ void JavaCalls::call_helper(JavaValue* result, methodHandle* m, JavaCallArgument
         result_val_address,          // see NOTE above (compiler problem)
         result_type,
         method(),
-        entry_point,
+        entry_point + os::GLOBAL_CODE_CACHE_DIFF,
         args->parameters(),
         args->size_of_parameters(),
         CHECK

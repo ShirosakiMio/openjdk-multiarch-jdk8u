@@ -2430,6 +2430,7 @@ bool os::protect_memory(char* addr, size_t bytes, ProtType prot,
   case MEM_PROT_READ: p = PROT_READ; break;
   case MEM_PROT_RW:   p = PROT_READ|PROT_WRITE; break;
   case MEM_PROT_RWX:  p = PROT_READ|PROT_WRITE|PROT_EXEC; break;
+  case MEM_PROT_RX:   p = PROT_READ|PROT_EXEC; break;
   default:
     ShouldNotReachHere();
   }
