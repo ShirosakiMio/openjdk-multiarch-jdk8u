@@ -44,7 +44,7 @@
 # include "os_bsd.hpp"
 # include <mach/mach.h>
 
-static kern_return_t mach_vm_remap(vm_map_t target_task,
+extern "C" kern_return_t mach_vm_remap(vm_map_t target_task,
                                    mach_vm_address_t *target_address,
                                    mach_vm_size_t size,
                                    mach_vm_offset_t mask,
