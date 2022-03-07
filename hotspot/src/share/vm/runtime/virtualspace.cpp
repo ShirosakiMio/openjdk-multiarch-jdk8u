@@ -389,7 +389,7 @@ ReservedCodeSpace::ReservedCodeSpace(size_t r_size,
   kern_return_t ret;
   vm_prot_t cur_prot, max_prot;
 
-  ret = mach_vm_remap(mach_task_self(), (mach_vm_address_t *)&os::GLOBAL_CODE_CACHE_ADDR, size, 0,
+  ret = mach_vm_remap(mach_task_self(), (mach_vm_address_t *)&os::GLOBAL_CODE_CACHE_ADDR, r_size, 0,
     VM_FLAGS_ANYWHERE, mach_task_self(), (mach_vm_address_t)base(), false, &cur_prot, &max_prot, VM_INHERIT_NONE);
   if (ret != KERN_SUCCESS) {
     fatal("cannot vm_remap for jit splitwx");
