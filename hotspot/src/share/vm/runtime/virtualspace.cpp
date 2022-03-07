@@ -44,7 +44,7 @@
 # include "os_bsd.hpp"
 # include <mach/mach.h>
 
-extern kern_return_t mach_vm_remap(vm_map_t target_task,
+static kern_return_t mach_vm_remap(vm_map_t target_task,
                                    mach_vm_address_t *target_address,
                                    mach_vm_size_t size,
                                    mach_vm_offset_t mask,
@@ -389,18 +389,18 @@ ReservedCodeSpace::ReservedCodeSpace(size_t r_size,
   kern_return_t ret;
   vm_prot_t cur_prot, max_prot;
 
-  ret = mach_vm_remap(mach_task_self(), &(mach_vm_address_t)os::GLOBAL_CODE_CACHE_ADDR, size, 0,
+  ret = mach_vm_remap(mach_task_self(), (mach_vm_address_t *)&os::GLOBAL_CODE_CACHE_ADDR, size, 0,
     VM_FLAGS_ANYWHERE, mach_task_self(), (mach_vm_address_t)base(), false, &cur_prot, &max_prot, VM_INHERIT_NONE);
   if (ret != KERN_SUCCESS) {
-    fatal("cannot vm_remap for jit splitwx: " ret);
+    fatal("cannot vm_remap for jit splitwx");
   }
 
   // Protect memory at the base of the mirrored region.
-  if (!os::protect_memory(os::GLOBAL_CODE_CACHE_ADDR, r_size, os::MEM_PROT_RX)) {
+  if (!os::protect_memory((char *)os::GLOBAL_CODE_CACHE_ADDR, r_size, os::MEM_PROT_RX)) {
     fatal("cannot protect protection page for jit splitwx");
   }
 
-  os::GLOBAL_CODE_CACHE_DIFF = os::GLOBAL_CODE_CACHE_ADDR - base();
+  os::GLOBAL_CODE_CACHE_DIFF = (char *)os::GLOBAL_CODE_CACHE_ADDR - base();
 #endif
   MemTracker::record_virtual_memory_type((address)base(), mtCode);
 }
